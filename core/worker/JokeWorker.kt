@@ -1,6 +1,7 @@
 package com.example.inventorymgmt.core.worker
 
 import android.content.Context
+import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.Data
@@ -12,6 +13,7 @@ class JokeWorker(appContext: Context, params: WorkerParameters) : Worker(appCont
         return try {
             val joke = runBlocking {
                 val response = ApiProvider.jokeApiService.getJoke()
+                Log.i("JokeWorker", "Fetched joke: ${response.joke}")
                 when (response.type) {
                     "single" -> response.joke ?: ""
                     "twopart" -> "${response.setup}\n${response.delivery}"
